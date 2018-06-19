@@ -17,7 +17,8 @@ BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
-: ${NETCORE_VERSION:="2.0"}
+: ${NETCORE_SDK:="2.1.4"}
+: ${NETCORE_VERSION:="2.0.5"}
 
 mkdir -p $BUILD_DIR/.profile.d
 cp $BP_DIR/profile/* $BUILD_DIR/.profile.d/
@@ -40,9 +41,11 @@ if [ -z ${PROJECT_NAME:-} ]; then
 fi
 
 if [ -n "$(cat $PROJECT_FILE | grep 'netcoreapp2.0')" ]; then
-	NETCORE_VERSION="2.0"
+	NETCORE_SDK="2.1.4"
+	NETCORE_VERSION="2.0.5"
 elif [ -n "$(cat $PROJECT_FILE | grep 'netcoreapp2.1')" ]; then
-	NETCORE_VERSION="2.1"
+	NETCORE_SDK="2.1.300"
+	NETCORE_VERSION="2.1.0"
 fi
 
 echo "Installing dotnet"
