@@ -54,7 +54,8 @@ apt_install libunwind8 gettext
 echo "Installing dotnet"
 install_dotnet $BUILD_DIR $CACHE_DIR $NETCORE_SDK $NETCORE_VERSION
 
-export PATH="${BUILD_DIR}/.heroku/dotnet:${PATH}"
+export PATH="/app/dotnet:${PATH}"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 cd $BUILD_DIR
 echo "publish ${PROJECT_FILE}"
