@@ -49,7 +49,7 @@ elif [ -n "$(cat $PROJECT_FILE | grep 'netcoreapp2.1')" ]; then
 fi
 
 echo "Installing dotnet"
-install_dotnet $BUILD_DIR $CACHE_DIR $NETCORE_VERSION
+install_dotnet $BUILD_DIR $CACHE_DIR $NETCORE_SDK $NETCORE_VERSION
 
 export PATH="${BUILD_DIR}/.heroku/dotnet:${PATH}"
 
