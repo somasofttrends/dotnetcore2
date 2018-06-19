@@ -3,10 +3,20 @@
 function install_dotnet() {
   local BUILD_DIR="$1"
   local CACHE_DIR="$2"
-  local ZIP_NAME="dotnet-2.1.300.tar.gz"
+  local NETCORE_SDK="$3"
+  local NETCORE_VERSION="$4"
+  local ZIP_NAME="dotnet-${NETCORE_SDK}.tar.gz"
 
+  echo "dotnet version: $NETCORE_VERSION"
+  echo "dotnet sdk: $NETCORE_SDK"
   if [ ! -f $CACHE_DIR/$ZIP_NAME ]; then
-    curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-linux-x64.tar.gz
+    if [[ "${NETCORE_VERSION}" == "2.1.0" ]]; then
+		  curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-linux-x64.tar.gz
+	  elif [[ "${NETCORE_VERSION}" == "2.0.5" ]]; then
+		  curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/1/1/5/115B762D-2B41-4AF3-9A63-92D9680B9409/dotnet-sdk-2.1.4-linux-x64.tar.gz
+	  else
+		  curl -sSL -o https://dotnetcli.blob.core.windows.net/dotnet/Sdk/LTS/latest.version
+		fi  
   else
     echo "$ZIP_NAME from cache folder"
   fi
