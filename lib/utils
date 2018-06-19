@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+function install_dotnet() {
+  local BUILD_DIR="$1"
+  local CACHE_DIR="$2"
+  local ZIP_NAME="dotnet-2.1.300.tar.gz"
+
+  if [ ! -f $CACHE_DIR/$ZIP_NAME ]; then
+    curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-linux-x64.tar.gz
+  else
+    echo "$ZIP_NAME from cache folder"
+  fi
+
+  mkdir -p ${BUILD_DIR}/.heroku/dotnet && tar zxf $CACHE_DIR/$ZIP_NAME -C ${BUILD_DIR}/.heroku/dotnet
+}
+
+# https://github.com/ddollar/heroku-buildpack-apt
+function topic() {
+  echo "-----> $*"
+}
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+export_env_dir() {
+  local env_dir=$1
+  if [ -d "$env_dir" ]; then
+    local whitelist_regex=${2:-''}
+    local blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH|LANG)$'}
+    if [ -d "$env_dir" ]; then
+      for e in $(ls $env_dir); do
+        echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+        export "$e=$(cat $env_dir/$e)"
+        :
+      done
+    fi
+  fi
+}
