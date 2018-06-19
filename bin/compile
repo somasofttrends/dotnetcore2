@@ -22,7 +22,7 @@ mkdir -p $BUILD_DIR/.profile.d
 cp $BP_DIR/profile/* $BUILD_DIR/.profile.d/
 
 ### Load dependencies
-source $BP_DIR/lib/utils
+source $BP_DIR/lib/helpers
 
 export_env_dir $ENV_DIR
 export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=${DOTNET_SKIP_FIRST_TIME_EXPERIENCE:-1}
