@@ -3,24 +3,11 @@
 function install_dotnet() {
   local BUILD_DIR="$1"
   local CACHE_DIR="$2"
-  local NETCORE_SDK="$3"
-  local NETCORE_VERSION="$4"
-  local ZIP_NAME="dotnet-${NETCORE_SDK}.tar.gz"
+  local ZIP_NAME="dotnet-2.1.4.tar.gz"
 
-  echo "dotnet version: $NETCORE_VERSION"
-  echo "sdk file name: $ZIP_NAME"
-  
   if [ ! -f $CACHE_DIR/$ZIP_NAME ]; then
-    if [[ "${NETCORE_VERSION}" == "2.1.0" ]]; then
-        echo "dotnet sdk: $NETCORE_SDK"
-	curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-linux-x64.tar.gz
-    elif [[ "${NETCORE_VERSION}" == "2.0.5" ]]; then
-        echo "dotnet sdk: $NETCORE_SDK"
-	curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/1/1/5/115B762D-2B41-4AF3-9A63-92D9680B9409/dotnet-sdk-2.1.4-linux-x64.tar.gz
-    else
-        echo "dotnet sdk: latest"
-	curl -sSL -o https://dotnetcli.blob.core.windows.net/dotnet/Sdk/LTS/latest.version
-    fi  
+    # https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.5.md
+    curl -sSL -o $CACHE_DIR/$ZIP_NAME https://download.microsoft.com/download/1/1/5/115B762D-2B41-4AF3-9A63-92D9680B9409/dotnet-sdk-2.1.4-linux-x64.tar.gz
   else
     echo "$ZIP_NAME from cache folder"
   fi
@@ -28,7 +15,6 @@ function install_dotnet() {
   mkdir -p ${BUILD_DIR}/.heroku/dotnet && tar zxf $CACHE_DIR/$ZIP_NAME -C ${BUILD_DIR}/.heroku/dotnet
   ln -s ${BUILD_DIR}/.heroku/dotnet /app
 }
-
 
 # https://github.com/ddollar/heroku-buildpack-apt
 function topic() {
